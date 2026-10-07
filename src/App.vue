@@ -1,12 +1,16 @@
 <!-- src/App.vue -->
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
+import { registerPlugin } from '@capacitor/core';
 import type { Note } from './types/note';
 import { noteRepository } from './db';
 import { notificationService } from './services/notification';
 import QuickAddBar from './components/QuickAddBar.vue';
 import NoteCard from './components/NoteCard.vue';
 import NoteEditorModal from './components/NoteEditorModal.vue';
+
+// Hubungkan ke jembatan widget Android
+const WidgetBridge = registerPlugin<any>('WidgetBridge');
 
 const notes = ref<Note[]>([]);
 const searchQuery = ref('');
@@ -15,16 +19,55 @@ const activeFilter = ref<'all' | 'reminder' | 'todo' | 'completed'>('all');
 const isModalOpen = ref(false);
 const editingNote = ref<Note | null>(null);
 
-async function loadNotes() {
-  notes.value = await noteRepository.getAllNotes();
+async function syncToWidget() {
+  try {
+    const topNote = notes.value[0];
+    if (topNote) {
+      const todoPreview = topNote.checklist?.find(c => !c.completed)?.text || topNote.content || 'Semua to-do selesai';
+      await WidgetBridge.updateWidgetData({
+        title: topNote.title,
+        content: (topNote.checklist?.length ? '☐ ' : '') + todoPreview,
+        noteId: topNote.id
+      });
+    } else {
+      await WidgetBridge.updateWidgetData({
+        title: 'Memora • by Natanael',
+        content: 'Belum ada catatan aktif',
+        noteId: ''
+      });
+    }
+  } catch (e) {
+    // Berjalan normal di mode web browser
+  }
 }
 
-onMounted(() => {
-  loadNotes();
+async function loadNotes() {
+  notes.value = await noteRepository.getAllNotes();
+  await syncToWidget();
+}
+
+onMounted(async () => {
+  await loadNotes();
   notificationService.setupListeners(loadNotes);
+
+  // Periksa apakah aplikasi dibuka dari sentuhan Widget di layar depan
+  try {
+    const res = await WidgetBridge.getInitialNoteId();
+    if (res?.noteId) {
+      handleOpenEdit(res.noteId);
+    }
+
+    // Dengarkan jika widget disentuh saat aplikasi sedang diminimize
+    WidgetBridge.addListener('onWidgetClicked', (data: { noteId: string }) => {
+      if (data?.noteId) {
+        handleOpenEdit(data.noteId);
+      }
+    });
+  } catch (e) {
+    // Mode browser biasa
+  }
 });
 
-// Penambahan instan dari bar depan
 async function handleQuickAdd(payload: { title: string; type: 'todo' | 'plain' }) {
   const newNote: Note = {
     id: 'note-' + Date.now(),
@@ -61,7 +104,6 @@ function handleOpenEdit(noteId: string) {
 }
 
 async function handleSaveNote(updatedNote: Note) {
-  // Jika ada jadwal pengingat, jadwalkan ke sistem Android
   if (updatedNote.reminder && updatedNote.reminder.status === 'pending') {
     const notifId = await notificationService.scheduleReminder(
       updatedNote.id,
@@ -81,7 +123,6 @@ async function handleDeleteNote(id: string) {
   await loadNotes();
 }
 
-// Penyaringan instan berdasarkan kata kunci dan tombol filter
 const filteredNotes = computed(() => {
   const q = searchQuery.value.toLowerCase();
   return notes.value.filter(n => {
@@ -109,6 +150,7 @@ const filteredNotes = computed(() => {
           <div class="logo">M</div>
           <div>
             <h1 class="title">Memora</h1>
+            <div class="author">by Natanael</div>
             <span class="subtitle">Pencatat Offline & Pengingat Terjadwal</span>
           </div>
         </div>
@@ -118,7 +160,6 @@ const filteredNotes = computed(() => {
         </div>
       </div>
 
-      <!-- Bilah Pencarian & Filter Kategori -->
       <div class="search-bar">
         <input v-model="searchQuery" type="text" placeholder="Cari catatan atau to-do..." />
       </div>
@@ -130,11 +171,9 @@ const filteredNotes = computed(() => {
         <button :class="{ active: activeFilter === 'completed' }" @click="activeFilter = 'completed'">✓ Selesai</button>
       </div>
 
-      <!-- Quick Add Bar -->
       <QuickAddBar @add-quick="handleQuickAdd" />
     </header>
 
-    <!-- Kisi Kartu Masonry Google Keep Style -->
     <main class="masonry-container">
       <div v-if="filteredNotes.length === 0" class="empty-state">
         <p>📝 Belum ada catatan. Buat catatan baru lewat kolom di atas!</p>
@@ -150,7 +189,6 @@ const filteredNotes = computed(() => {
       />
     </main>
 
-    <!-- Modal Full Editor -->
     <NoteEditorModal
       :is-open="isModalOpen"
       :note="editingNote"
@@ -198,6 +236,15 @@ const filteredNotes = computed(() => {
   font-size: 20px;
   font-weight: 700;
   color: var(--text-main);
+  line-height: 1.1;
+}
+.author {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--blue-primary);
+  margin-top: 1px;
+  margin-bottom: 2px;
+  letter-spacing: 0.3px;
 }
 .subtitle {
   font-size: 12px;
