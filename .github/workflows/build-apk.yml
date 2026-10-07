@@ -1,0 +1,50 @@
+name: Build Android APK (Memora Notes)
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Merakit File APK Android
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Mengambil Source Code
+        uses: actions/checkout@v4
+
+      - name: Menyiapkan Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Menyiapkan Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: 17
+
+      - name: Menginstal Ketergantungan
+        run: npm install
+
+      - name: Membangun Aplikasi Web
+        run: npm run build
+
+      - name: Sinkronisasi ke Platform Android
+        run: |
+          npx cap add android || true
+          npx cap sync android
+
+      - name: Merakit APK Android (Debug Mode)
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug
+
+      - name: Mengunggah Hasil APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Memora-App-Debug
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 14
