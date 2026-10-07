@@ -1,6 +1,10 @@
 // scripts/setup-widget.js
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 console.log("=== Memulai Pemasangan Widget Android Memora ===");
 
@@ -45,7 +49,7 @@ const widgetLayoutXml = `<?xml version="1.0" encoding="utf-8"?>
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Memora • by Natanael"
+            android:text="Memora - by Natanael"
             android:textColor="#2563EB"
             android:textSize="12sp"
             android:textStyle="bold" />
@@ -54,7 +58,7 @@ const widgetLayoutXml = `<?xml version="1.0" encoding="utf-8"?>
             android:id="@+id/widget_edit_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="✎ Edit"
+            android:text="Edit"
             android:textColor="#2563EB"
             android:textSize="12sp"
             android:textStyle="bold" />
@@ -89,7 +93,7 @@ const widgetLayoutXml = `<?xml version="1.0" encoding="utf-8"?>
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
-        android:text="👆 Sentuh untuk edit langsung"
+        android:text="Sentuh untuk edit langsung"
         android:textColor="#94A3B8"
         android:textSize="11sp" />
 </LinearLayout>`;
@@ -140,7 +144,6 @@ public class MemoraWidget extends AppWidgetProvider {
         views.setTextViewText(R.id.widget_note_title, title);
         views.setTextViewText(R.id.widget_note_content, content);
 
-        // Saat widget disentuh di beranda, buka MainActivity dan bawa noteId untuk langsung membuka editor!
         Intent intent = new Intent(context, MainActivity.class);
         intent.setAction(Intent.ACTION_VIEW);
         intent.putExtra("OPEN_NOTE_ID", noteId);
