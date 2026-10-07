@@ -36,6 +36,10 @@ jobs:
           npx cap add android || true
           npx cap sync android
 
+      # Menjalankan pemasangan Widget Android
+      - name: Memasang Widget Layar Depan Android
+        run: node scripts/setup-widget.js
+
       - name: Merakit APK Android (Debug Mode)
         run: |
           cd android
