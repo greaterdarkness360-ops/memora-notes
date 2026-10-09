@@ -1,20 +1,21 @@
 /* src/assets/main.css */
 :root {
-  --bg-cream: #FAF7F2;
-  --bg-surface: #FFFFFF;
-  --border-subtle: #E8E3DA;
-  --border-hover: #D0C9BD;
-  --text-main: #1E293B;
-  --text-muted: #64748B;
-  --text-light: #94A3B8;
-  --blue-primary: #2563EB;
-  --blue-accent: #38BDF8;
-  --blue-soft: #EFF6FF;
-  --shadow-sm: 0 1px 3px rgba(30, 41, 59, 0.05);
-  --shadow-md: 0 4px 12px rgba(30, 41, 59, 0.07);
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
+  --bg-cream: #FAF5EE;         /* Latar kanvas cream lembut */
+  --bg-surface: #FFFFFF;       /* Permukaan kartu putih bersih */
+  --border-subtle: #FCE7F3;    /* Garis tepi pink pastel sangat halus */
+  --border-hover: #FBCFE8;     /* Garis tepi pink saat disentuh */
+  --text-main: #3F3D56;        /* Teks abu-abu hangat (ramah di mata) */
+  --text-muted: #837D88;       /* Teks sekunder yang lembut */
+  --text-light: #B4ADB9;       /* Teks abu-abu muda */
+  --pink-primary: #EC4899;     /* Pink cerah utama untuk tombol & aksen */
+  --pink-accent: #F43F5E;      /* Rose pink manis */
+  --pink-soft: #FDF2F8;        /* Latar kotak soft pink */
+  --pink-pill: #FCE7F3;        /* Latar tombol filter */
+  --shadow-sm: 0 2px 6px rgba(236, 72, 153, 0.06);
+  --shadow-md: 0 6px 16px rgba(236, 72, 153, 0.1);
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 20px;
 }
 
 * {
@@ -25,7 +26,7 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   background-color: var(--bg-cream);
   color: var(--text-main);
   min-height: 100vh;
