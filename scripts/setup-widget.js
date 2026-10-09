@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-console.log("=== Memulai Pemasangan Widget Android Memora ===");
+console.log("=== Memasang Widget Android Memora (Sweet Pink Edition) ===");
 
 const resDir = path.join(__dirname, '../android/app/src/main/res');
 const javaDir = path.join(__dirname, '../android/app/src/main/java/com/memora/notes');
@@ -18,17 +18,17 @@ fs.mkdirSync(path.join(resDir, 'layout'), { recursive: true });
 fs.mkdirSync(path.join(resDir, 'xml'), { recursive: true });
 fs.mkdirSync(javaDir, { recursive: true });
 
-// 1. Background Kartu Widget (Cream dengan sudut membulat)
+// 1. Background Kartu Widget (Cream dengan border soft pink)
 const widgetBgXml = `<?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
-    <solid android:color="#FAF7F2" />
+    <solid android:color="#FAF5EE" />
     <corners android:radius="16dp" />
-    <stroke android:width="1.5dp" android:color="#E8E3DA" />
+    <stroke android:width="1.5dp" android:color="#FBCFE8" />
 </shape>`;
 fs.writeFileSync(path.join(resDir, 'drawable/widget_bg.xml'), widgetBgXml);
 
-// 2. Tata Letak Tampilan Widget di Layar Depan HP
+// 2. Tata Letak Widget
 const widgetLayoutXml = `<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/widget_container"
@@ -50,7 +50,7 @@ const widgetLayoutXml = `<?xml version="1.0" encoding="utf-8"?>
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Memora - by Natanael"
-            android:textColor="#2563EB"
+            android:textColor="#EC4899"
             android:textSize="12sp"
             android:textStyle="bold" />
 
@@ -59,7 +59,7 @@ const widgetLayoutXml = `<?xml version="1.0" encoding="utf-8"?>
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Edit"
-            android:textColor="#2563EB"
+            android:textColor="#EC4899"
             android:textSize="12sp"
             android:textStyle="bold" />
     </LinearLayout>
@@ -70,7 +70,7 @@ const widgetLayoutXml = `<?xml version="1.0" encoding="utf-8"?>
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="Memora Notes"
-        android:textColor="#1E293B"
+        android:textColor="#3F3D56"
         android:textSize="15sp"
         android:textStyle="bold"
         android:maxLines="1"
@@ -83,7 +83,7 @@ const widgetLayoutXml = `<?xml version="1.0" encoding="utf-8"?>
         android:layout_weight="1"
         android:layout_marginTop="4dp"
         android:text="Ketuk untuk membuka atau mengedit catatan"
-        android:textColor="#475569"
+        android:textColor="#837D88"
         android:textSize="13sp"
         android:maxLines="3"
         android:ellipsize="end" />
@@ -94,12 +94,12 @@ const widgetLayoutXml = `<?xml version="1.0" encoding="utf-8"?>
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:text="Sentuh untuk edit langsung"
-        android:textColor="#94A3B8"
+        android:textColor="#B4ADB9"
         android:textSize="11sp" />
 </LinearLayout>`;
 fs.writeFileSync(path.join(resDir, 'layout/memora_widget.xml'), widgetLayoutXml);
 
-// 3. Konfigurasi Ukuran Widget Android
+// 3. Info Widget
 const widgetInfoXml = `<?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:minWidth="140dp"
@@ -113,7 +113,7 @@ const widgetInfoXml = `<?xml version="1.0" encoding="utf-8"?>
 </appwidget-provider>`;
 fs.writeFileSync(path.join(resDir, 'xml/memora_widget_info.xml'), widgetInfoXml);
 
-// 4. File Java Penyedia Widget (MemoraWidget.java)
+// 4. File Java MemoraWidget
 const memoraWidgetJava = `package com.memora.notes;
 
 import android.app.PendingIntent;
@@ -173,7 +173,7 @@ public class MemoraWidget extends AppWidgetProvider {
 }`;
 fs.writeFileSync(path.join(javaDir, 'MemoraWidget.java'), memoraWidgetJava);
 
-// 5. Jembatan Komunikasi Web-ke-Android (WidgetBridgePlugin.java)
+// 5. Plugin WidgetBridge
 const widgetBridgeJava = `package com.memora.notes;
 
 import android.app.Activity;
@@ -285,4 +285,4 @@ if (fs.existsSync(manifestPath)) {
     }
 }
 
-console.log("=== Pemasangan Widget Android Selesai! ===");
+console.log("=== Pemasangan Widget Selesai! ===");
