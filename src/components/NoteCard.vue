@@ -19,7 +19,6 @@ function onTouchStart(e: TouchEvent) {
   if (target.tagName === 'INPUT' || target.closest('.toggle-box')) return;
   
   isTouching.value = true;
-  // Deteksi Tahan Lama (Long-Press 0.6 detik)
   touchTimer = setTimeout(() => {
     isTouching.value = false;
     emit('open-edit', props.note.id);
@@ -30,7 +29,6 @@ function onTouchEnd(e: TouchEvent) {
   if (touchTimer) clearTimeout(touchTimer);
   isTouching.value = false;
 
-  // Deteksi Ketuk Ganda (Double-Tap)
   const currentTime = new Date().getTime();
   const tapLength = currentTime - lastTap;
   if (tapLength < 350 && tapLength > 0) {
@@ -51,7 +49,7 @@ function onTouchEnd(e: TouchEvent) {
   >
     <div class="card-header">
       <h3 class="card-title">{{ props.note.title }}</h3>
-      <span class="edit-icon" title="Ketuk 2x atau tahan untuk edit">✎</span>
+      <span class="edit-icon" title="Ketuk 2x atau tahan untuk edit">✎ 🌸</span>
     </div>
 
     <!-- Isi Catatan Teks -->
@@ -59,7 +57,7 @@ function onTouchEnd(e: TouchEvent) {
       {{ props.note.content }}
     </div>
 
-    <!-- Blok Checklist To-Do (Langsung centang di beranda) -->
+    <!-- Blok Checklist To-Do -->
     <div v-if="props.note.checklist?.length" class="checklist-group">
       <label
         v-for="item in props.note.checklist"
@@ -71,6 +69,7 @@ function onTouchEnd(e: TouchEvent) {
         <input
           type="checkbox"
           :checked="item.completed"
+          class="cute-checkbox"
           @change="emit('toggle-check', props.note.id, item.id)"
         />
         <span>{{ item.text }}</span>
@@ -96,12 +95,12 @@ function onTouchEnd(e: TouchEvent) {
       </div>
     </div>
 
-    <!-- Kapsul Pengingat -->
+    <!-- Garis Doodle Lucu & Kapsul Pengingat -->
     <div class="card-footer">
       <span v-if="props.note.reminder" class="reminder-badge">
-        ⏰ {{ props.note.reminder.datetime }}
+        🌸 {{ props.note.reminder.datetime }}
       </span>
-      <span class="card-hint">Ketuk 2x untuk edit</span>
+      <span class="card-hint">Ketuk 2x untuk edit 💕</span>
     </div>
   </div>
 </template>
@@ -110,18 +109,24 @@ function onTouchEnd(e: TouchEvent) {
 .note-card {
   break-inside: avoid;
   background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
+  border: 1.5px solid var(--border-subtle);
   border-radius: var(--radius-md);
   padding: 16px;
   margin-bottom: 16px;
   box-shadow: var(--shadow-sm);
   cursor: pointer;
-  transition: transform 0.15s ease, border-color 0.15s ease;
+  transition: all 0.2s ease;
   user-select: none;
+}
+.note-card:hover {
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
 .note-card.touching {
   transform: scale(0.98);
-  border-color: var(--blue-accent);
+  border-color: var(--pink-primary);
+  background: var(--pink-soft);
 }
 .card-header {
   display: flex;
@@ -133,16 +138,19 @@ function onTouchEnd(e: TouchEvent) {
   font-size: 15px;
   font-weight: 700;
   color: var(--text-main);
+  line-height: 1.25;
 }
 .edit-icon {
-  font-size: 12px;
-  color: var(--text-light);
+  font-size: 11px;
+  color: var(--pink-primary);
+  opacity: 0.8;
 }
 .card-text {
   font-size: 13.5px;
-  color: #334155;
+  color: var(--text-main);
   white-space: pre-wrap;
   margin-bottom: 8px;
+  line-height: 1.5;
 }
 .checklist-group {
   display: flex;
@@ -157,6 +165,12 @@ function onTouchEnd(e: TouchEvent) {
   font-size: 13.5px;
   cursor: pointer;
 }
+.cute-checkbox {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--pink-primary);
+  cursor: pointer;
+}
 .check-row.done span {
   text-decoration: line-through;
   color: var(--text-light);
@@ -168,7 +182,8 @@ function onTouchEnd(e: TouchEvent) {
   margin-bottom: 8px;
 }
 .toggle-box {
-  background: var(--bg-cream);
+  background: var(--pink-soft);
+  border: 1px solid var(--border-subtle);
   padding: 6px 10px;
   border-radius: var(--radius-sm);
   font-size: 13px;
@@ -178,6 +193,7 @@ function onTouchEnd(e: TouchEvent) {
   align-items: center;
   gap: 6px;
   font-weight: 600;
+  color: var(--pink-primary);
 }
 .arrow {
   font-size: 10px;
@@ -191,25 +207,29 @@ function onTouchEnd(e: TouchEvent) {
   padding-left: 14px;
   color: var(--text-muted);
   font-size: 12.5px;
+  border-top: 1px dashed var(--border-hover);
+  margin-top: 4px;
 }
+/* Pembatas Doodle Bergelombang */
 .card-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 10px;
   padding-top: 8px;
-  border-top: 1px solid #F1ECE4;
+  border-top: 2px dotted #FBCFE8;
 }
 .reminder-badge {
-  font-size: 11.5px;
+  font-size: 11px;
   font-weight: 600;
-  background: #FEF3C7;
-  color: #92400E;
+  background: #FFF1F2;
+  color: #BE123C;
+  border: 1px solid #FECDD3;
   padding: 2px 8px;
   border-radius: 999px;
 }
 .card-hint {
-  font-size: 11px;
+  font-size: 10.5px;
   color: var(--text-light);
 }
 </style>
