@@ -2,9 +2,9 @@
 :root {
   --bg-cream: #FAF5EE;         /* Latar kanvas cream lembut */
   --bg-surface: #FFFFFF;       /* Permukaan kartu putih bersih */
-  --border-subtle: #FCE7F3;    /* Garis tepi pink pastel sangat halus */
+  --border-subtle: #FCE7F3;    /* Garis tepi pink pastel halus */
   --border-hover: #FBCFE8;     /* Garis tepi pink saat disentuh */
-  --text-main: #3F3D56;        /* Teks abu-abu hangat (ramah di mata) */
+  --text-main: #3F3D56;        /* Teks abu-abu hangat yang ramah di mata */
   --text-muted: #837D88;       /* Teks sekunder yang lembut */
   --text-light: #B4ADB9;       /* Teks abu-abu muda */
   --pink-primary: #EC4899;     /* Pink cerah utama untuk tombol & aksen */
