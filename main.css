@@ -1,0 +1,99 @@
+:root {
+  /* Latar & Permukaan (Sweet Pink Light Mode) */
+  --bg-cream: #FAF5EE;
+  --bg-surface: #FFFFFF;
+
+  /* Border */
+  --border-subtle: #FCE7F3;
+  --border-hover: #FBCFE8;
+
+  /* Teks */
+  --text-main: #3F3D56;
+  --text-muted: #837D88;
+  --text-light: #B4ADB9;
+
+  /* Aksen Pink */
+  --pink-primary: #EC4899;
+  --pink-accent: #F43F5E;
+  --pink-soft: #FDF2F8;
+  --pink-pill: #FCE7F3;
+
+  /* Shadow & Efek */
+  --shadow-sm: 0 2px 6px rgba(236, 72, 153, 0.06);
+  --shadow-md: 0 6px 16px rgba(236, 72, 153, 0.1);
+  --logo-bg: linear-gradient(135deg, #EC4899, #FB7185);
+  --logo-shadow: 0 4px 10px rgba(236, 72, 153, 0.3);
+  --btn-primary-text: #FFFFFF;
+  --btn-active-shadow: 0 2px 6px rgba(236, 72, 153, 0.25);
+  --focus-ring: 0 0 0 3px rgba(236, 72, 153, 0.12);
+
+  /* Kotak Pengingat & Danger */
+  --reminder-bg: #FFF1F2;
+  --reminder-border: #FECDD3;
+  --reminder-head: #BE123C;
+  --reminder-input-border: #FDA4AF;
+  --reminder-input-bg: #FFFFFF;
+  --danger-color: #FB7185;
+
+  /* Border Radius */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 20px;
+
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  /* Latar & Permukaan (Mode Gelap Tanpa Hiasan) */
+  --bg-cream: #0E0E11;
+  --bg-surface: #18181C;
+
+  /* Border */
+  --border-subtle: #27272A;
+  --border-hover: #3F3F46;
+
+  /* Teks */
+  --text-main: #F4F4F5;
+  --text-muted: #A1A1AA;
+  --text-light: #71717A;
+
+  /* Aksen Netral Datar */
+  --pink-primary: #F4F4F5;
+  --pink-accent: #D4D4D8;
+  --pink-soft: #1F1F23;
+  --pink-pill: #27272A;
+
+  /* Tanpa Shadow & Tanpa Gradasi */
+  --shadow-sm: none;
+  --shadow-md: none;
+  --logo-bg: #27272A;
+  --logo-shadow: none;
+  --btn-primary-text: #0E0E11;
+  --btn-active-shadow: none;
+  --focus-ring: 0 0 0 2px rgba(244, 244, 245, 0.16);
+
+  /* Kotak Pengingat & Danger */
+  --reminder-bg: #1F1F23;
+  --reminder-border: #27272A;
+  --reminder-head: #F4F4F5;
+  --reminder-input-border: #3F3F46;
+  --reminder-input-bg: #141417;
+  --danger-color: #EF4444;
+
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-cream);
+  color: var(--text-main);
+  min-height: 100vh;
+  line-height: 1.5;
+}
